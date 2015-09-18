@@ -9,22 +9,21 @@ echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selecti
 DEBIAN_FRONTEND=noninteractive apt-get install -y oracle-java7-installer oracle-java7-set-default
 
 echo "Installing Druid."
-if [ ! -d "druid-services" ]; then
+if [ ! -d "druid" ]; then
 
-wget --quiet http://static.druid.io/artifacts/releases/druid-services-0.6.160-bin.tar.gz && \
-  tar -zxf druid-services-*.gz && \
-  mv druid-services-0.6.160 druid-services &&\
-  mv druid-services/config druid-services/config.orig &&\
-  cp -r /vagrant/config druid-services/config &&\
-  chown -R vagrant:vagrant druid-services 
-
+wget --quiet http://static.druid.io/artifacts/releases/druid-0.8.1-rc2-bin.tar.gz && \
+  tar -zxf druid-*.gz && \
+  mv druid-0.8.1-rc2 druid &&\
+  mv druid/config druid/config.orig &&\
+  cp -r /vagrant/config druid/config &&\
+  chown -R vagrant:vagrant druid
 fi
 
 echo "Installing Druid plugins."
 if [ ! -d "druid-src" ]; then
     git clone https://github.com/metamx/druid.git druid-src
     cd druid-src
-    git checkout tags/druid-0.6.160
+    git checkout tags/druid-0.8.1-rc2
     mvn install -DskipTests
     cd -
 fi
